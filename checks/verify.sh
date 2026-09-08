@@ -28,7 +28,7 @@ echo "==> Verificação final"
 check_cmd gnome-shell "GNOME Shell instalado"
 check_cmd gnome-control-center "Configurações do GNOME instaladas"
 check_cmd nautilus "Nautilus instalado"
-check_cmd kgx "GNOME Console instalado"
+check_cmd ptyxis "Ptyxis instalado"
 check_cmd gnome-software "GNOME Software instalado"
 check_cmd flatpak "Flatpak instalado"
 check_enabled gdm.service
