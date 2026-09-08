@@ -159,6 +159,20 @@ A integração será carregada após reiniciar o Nautilus ou iniciar uma nova se
 nautilus -q
 ```
 
+## Aplicativos de terceiros
+
+### Visual Studio Code
+
+O script instala o **Visual Studio Code oficial da Microsoft** através do pacote AUR:
+
+```text
+visual-studio-code-bin
+```
+
+Esse pacote utiliza os binários oficiais distribuídos pela Microsoft. Ele é diferente do pacote `code` dos repositórios oficiais do Arch, que corresponde à build open-source Code - OSS.
+
+A instalação é feita diretamente com `git` + `makepkg`, no mesmo modelo utilizado para outros pacotes AUR deste projeto. A execução é idempotente: se `visual-studio-code-bin` já estiver instalado, o script não reinstala o pacote.
+
 ## Uso
 
 Após entrar no usuário da instalação básica:
@@ -186,8 +200,9 @@ O GDM deverá iniciar e disponibilizar a sessão GNOME.
 4. instala e configura a integração Ptyxis + Nautilus;
 5. habilita o GDM;
 6. instala Flatpak e configura Flathub;
-7. executa verificações básicas;
-8. detecta a presença de NVIDIA, mas não altera o driver.
+7. instala o Visual Studio Code oficial da Microsoft;
+8. executa verificações básicas;
+9. detecta a presença de NVIDIA, mas não altera o driver.
 
 Rede, áudio, usuário/root, kernel, bootloader e driver gráfico devem ser definidos previamente no `archinstall`.
 
@@ -199,7 +214,8 @@ Rede, áudio, usuário/root, kernel, bootloader e driver gráfico devem ser defi
 ├── scripts/
 │   ├── 01-system.sh
 │   ├── 02-gnome.sh
-│   └── 03-flatpak.sh
+│   ├── 03-flatpak.sh
+│   └── 04-apps.sh
 ├── checks/
 │   └── verify.sh
 └── README.md
@@ -218,7 +234,6 @@ O repositório está preparado para receber módulos separados para:
 - aplicativos Flatpak;
 - AUR e helper (`yay`/`paru`);
 - ferramentas de desenvolvimento;
-- VS Code;
 - configurações pessoais do GNOME;
 - verificações específicas da NVIDIA/Wayland;
 - perfil de VM e perfil da estação física.
