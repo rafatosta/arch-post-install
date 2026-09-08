@@ -28,6 +28,7 @@ for script in \
   "$ROOT_DIR/scripts/01-system.sh" \
   "$ROOT_DIR/scripts/02-gnome.sh" \
   "$ROOT_DIR/scripts/03-flatpak.sh" \
+  "$ROOT_DIR/scripts/04-apps.sh" \
   "$ROOT_DIR/checks/verify.sh"; do
   echo
   echo "==> Executando $(basename "$script")"
