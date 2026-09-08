@@ -35,3 +35,29 @@ if [[ "$configured_theme" != "'$theme'" ]]; then
 fi
 
 echo "[OK] Tema GTK3 configurado: $theme"
+
+echo "==> Instalando tema de ícones LinuxMidnight"
+ICON_REPO="https://github.com/rafatosta/LinuxMidnight-icon-theme.git"
+ICON_THEME="LinuxMidnight"
+ICON_TMP="$(mktemp -d)"
+trap 'rm -rf -- "$ICON_TMP"' EXIT
+
+git clone --depth=1 "$ICON_REPO" "$ICON_TMP/LinuxMidnight-icon-theme"
+bash "$ICON_TMP/LinuxMidnight-icon-theme/install.sh"
+
+if run_gsettings list-schemas | grep -Fxq org.gnome.desktop.interface; then
+  run_gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+  configured_icons="$(run_gsettings get org.gnome.desktop.interface icon-theme)"
+
+  if [[ "$configured_icons" != "'$ICON_THEME'" ]]; then
+    printf 'ERRO: Falha ao ativar o tema de ícones: %s\n' "$ICON_THEME" >&2
+    exit 1
+  fi
+
+  echo "[OK] Tema de ícones configurado: $ICON_THEME"
+else
+  echo "[AVISO] Tema LinuxMidnight instalado, mas o schema do GNOME não está disponível para ativação automática."
+fi
+
+rm -rf -- "$ICON_TMP"
+trap - EXIT
