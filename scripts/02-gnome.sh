@@ -7,7 +7,7 @@ PACKAGES=(
   gdm
   gnome-control-center
   nautilus
-  gnome-console
+  ptyxis
   gnome-software
   gnome-keyring
   xdg-desktop-portal-gnome
