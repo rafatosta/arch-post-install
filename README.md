@@ -139,9 +139,25 @@ O terminal escolhido é o **Ptyxis** (`ptyxis`), disponível no repositório `ex
 
 O GNOME Console (`gnome-console`) não é instalado por este projeto.
 
-A integração “abrir terminal nesta pasta” no Nautilus não é tratada automaticamente por este script neste momento, porque o Nautilus não fornece de forma genérica essa integração para terminais alternativos apenas pela instalação do Ptyxis. Se necessário, essa integração deve ser adicionada separadamente por uma extensão compatível.
+### Integração Ptyxis + Nautilus
 
-Não são instalados pelo `pacman` aplicativos como Calculadora, Calendário, navegador, editor de texto, mapas, clima ou outros utilitários GNOME.
+O pós-instalação também instala a extensão **`nautilus-open-any-terminal`**, que adiciona ao menu de contexto do Nautilus a opção para abrir a pasta atual em um terminal.
+
+Como esse pacote vem do AUR, ele é instalado diretamente usando `git` e `makepkg`, sem depender de `yay` ou `paru` nesta etapa. O script também instala `nautilus-python`, necessário para a extensão.
+
+Após a instalação, o terminal da extensão é configurado para:
+
+```text
+ptyxis
+```
+
+Assim, ao clicar com o botão direito em uma pasta ou no fundo de uma pasta do Nautilus, a opção de abrir no terminal utilizará o Ptyxis.
+
+A integração será carregada após reiniciar o Nautilus ou iniciar uma nova sessão do GNOME. Se quiser aplicar sem reiniciar a sessão:
+
+```bash
+nautilus -q
+```
 
 ## Uso
 
@@ -167,10 +183,11 @@ O GDM deverá iniciar e disponibilizar a sessão GNOME.
 1. atualiza o Arch com `pacman -Syu`;
 2. instala somente os componentes adicionais necessários ao pós-instalação;
 3. instala o GNOME mínimo;
-4. habilita o GDM;
-5. instala Flatpak e configura Flathub;
-6. executa verificações básicas;
-7. detecta a presença de NVIDIA, mas não altera o driver.
+4. instala e configura a integração Ptyxis + Nautilus;
+5. habilita o GDM;
+6. instala Flatpak e configura Flathub;
+7. executa verificações básicas;
+8. detecta a presença de NVIDIA, mas não altera o driver.
 
 Rede, áudio, usuário/root, kernel, bootloader e driver gráfico devem ser definidos previamente no `archinstall`.
 
