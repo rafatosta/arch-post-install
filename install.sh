@@ -22,7 +22,22 @@ echo "==> Arch post-install"
 echo "    Usuário: ${USER}"
 echo
 
+# Solicita a senha uma única vez no início e mantém o timestamp do sudo
+# válido durante toda a execução. Nenhuma senha é armazenada pelo script.
 sudo -v
+(
+  while kill -0 "$$" 2>/dev/null; do
+    sudo -n true 2>/dev/null || exit
+    sleep 60
+  done
+) &
+SUDO_KEEPALIVE_PID=$!
+
+cleanup() {
+  kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
+  wait "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
 
 for script in \
   "$ROOT_DIR/scripts/01-system.sh" \
