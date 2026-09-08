@@ -15,6 +15,24 @@ Antes de executar:
 - driver gráfico definido durante a instalação inicial;
 - Secure Boot e criptografia não são configurados por este projeto.
 
+## Pré-requisito: Git
+
+O pacote `base` do Arch Linux **não inclui o Git**. Dependendo das opções escolhidas no `archinstall`, ele pode já estar disponível, mas este projeto não assume isso.
+
+Após o primeiro login, verifique:
+
+```bash
+git --version
+```
+
+Se o comando não existir, instale o Git antes de clonar este repositório:
+
+```bash
+sudo pacman -S git
+```
+
+Depois siga normalmente com o clone.
+
 ## GNOME instalado
 
 O script instala somente a base funcional escolhida para esta máquina:
@@ -38,6 +56,7 @@ Não são instalados pelo `pacman` aplicativos como Calculadora, Calendário, na
 Após entrar no usuário da instalação básica:
 
 ```bash
+git --version || sudo pacman -S git
 git clone https://github.com/rafatosta/arch-post-install.git
 cd arch-post-install
 bash install.sh
@@ -54,12 +73,14 @@ O GDM deverá iniciar e disponibilizar a sessão GNOME.
 ## O que o instalador faz
 
 1. atualiza o Arch com `pacman -Syu`;
-2. instala ferramentas e serviços básicos;
+2. instala somente os componentes adicionais necessários ao pós-instalação;
 3. instala o GNOME mínimo;
-4. habilita GDM, NetworkManager e Bluetooth;
+4. habilita o GDM;
 5. instala Flatpak e configura Flathub;
 6. executa verificações básicas;
 7. detecta a presença de NVIDIA, mas não altera o driver.
+
+Rede, áudio, usuário/root, kernel, bootloader e driver gráfico devem ser definidos previamente no `archinstall`.
 
 ## Estrutura
 
