@@ -27,7 +27,20 @@ if ! pacman -Q nautilus-open-any-terminal >/dev/null 2>&1; then
   git clone --depth=1 https://aur.archlinux.org/nautilus-open-any-terminal.git "$tmp_dir/nautilus-open-any-terminal"
   (
     cd "$tmp_dir/nautilus-open-any-terminal"
-    makepkg -si --needed --noconfirm
+
+    # Este PKGBUILD gera pacotes separados para Nautilus e Caja.
+    # `makepkg -si` tentaria instalar ambos e eles compartilham arquivos,
+    # causando conflito. Compilamos tudo, mas instalamos somente o pacote
+    # destinado ao Nautilus.
+    makepkg -s --needed --noconfirm
+
+    nautilus_pkg="$(find . -maxdepth 1 -type f -name 'nautilus-open-any-terminal-*.pkg.tar.*' -print -quit)"
+    if [[ -z "$nautilus_pkg" ]]; then
+      echo "[ERRO] Pacote nautilus-open-any-terminal não foi gerado."
+      exit 1
+    fi
+
+    sudo pacman -U --needed --noconfirm "$nautilus_pkg"
   )
 
   rm -rf "$tmp_dir"
