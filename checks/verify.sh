@@ -34,6 +34,13 @@ check_cmd flatpak "Flatpak instalado"
 check_enabled gdm.service
 check_enabled NetworkManager.service
 
+if pacman -Q nautilus-open-any-terminal >/dev/null 2>&1; then
+  echo "[OK] Integração Ptyxis/Nautilus instalada"
+else
+  echo "[ERRO] Integração Ptyxis/Nautilus não instalada"
+  status=1
+fi
+
 if flatpak remote-list --columns=name 2>/dev/null | grep -qx flathub; then
   echo "[OK] Flathub configurado"
 else
