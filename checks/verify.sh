@@ -30,6 +30,7 @@ check_cmd gnome-control-center "Configurações do GNOME instaladas"
 check_cmd nautilus "Nautilus instalado"
 check_cmd ptyxis "Ptyxis instalado"
 check_cmd gnome-software "GNOME Software instalado"
+check_cmd code "Visual Studio Code instalado"
 check_cmd flatpak "Flatpak instalado"
 check_enabled gdm.service
 check_enabled NetworkManager.service
