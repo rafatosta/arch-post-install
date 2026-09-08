@@ -1,0 +1,15 @@
+name: Shell syntax
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  bash-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Bash syntax
+        shell: bash
+        run: |
+          find . -type f -name '*.sh' -print0 | xargs -0 -n1 bash -n
