@@ -7,6 +7,7 @@ PACKAGES=(
   gdm
   gnome-control-center
   nautilus
+  nautilus-python
   ptyxis
   gnome-software
   gnome-keyring
@@ -18,9 +19,30 @@ PACKAGES=(
 echo "==> Instalando GNOME mínimo"
 sudo pacman -S --needed --noconfirm "${PACKAGES[@]}"
 
+echo "==> Instalando integração Ptyxis + Nautilus"
+if ! pacman -Q nautilus-open-any-terminal >/dev/null 2>&1; then
+  tmp_dir="$(mktemp -d)"
+  trap 'rm -rf "$tmp_dir"' EXIT
+
+  git clone --depth=1 https://aur.archlinux.org/nautilus-open-any-terminal.git "$tmp_dir/nautilus-open-any-terminal"
+  (
+    cd "$tmp_dir/nautilus-open-any-terminal"
+    makepkg -si --needed --noconfirm
+  )
+
+  rm -rf "$tmp_dir"
+  trap - EXIT
+fi
+
+if gsettings list-schemas | grep -qx 'com.github.stunkymonkey.nautilus-open-any-terminal'; then
+  gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal ptyxis
+fi
+
 echo "==> Habilitando o GDM"
 sudo systemctl enable gdm.service
 
 echo "==> Habilitando serviços úteis ao GNOME"
 sudo systemctl enable power-profiles-daemon.service 2>/dev/null || true
 sudo systemctl enable switcheroo-control.service 2>/dev/null || true
+
+echo "==> A integração 'Abrir no terminal' estará disponível no Nautilus após reiniciar a sessão."
