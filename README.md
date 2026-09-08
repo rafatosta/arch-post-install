@@ -128,12 +128,18 @@ O script instala somente a base funcional escolhida para esta máquina:
 - GDM;
 - GNOME Settings (`gnome-control-center`);
 - Nautilus;
-- GNOME Console;
+- Ptyxis;
 - GNOME Software;
 - GNOME Keyring;
 - portal do GNOME para integração com Flatpak;
 - Power Profiles Daemon;
 - Switcheroo Control para integração com sistemas de GPU híbrida.
+
+O terminal escolhido é o **Ptyxis** (`ptyxis`), disponível no repositório `extra` do Arch. Ele é o terminal moderno do ecossistema GNOME com foco também em integração com ambientes de desenvolvimento baseados em containers, como Podman, Toolbox e Distrobox.
+
+O GNOME Console (`gnome-console`) não é instalado por este projeto.
+
+A integração “abrir terminal nesta pasta” no Nautilus não é tratada automaticamente por este script neste momento, porque o Nautilus não fornece de forma genérica essa integração para terminais alternativos apenas pela instalação do Ptyxis. Se necessário, essa integração deve ser adicionada separadamente por uma extensão compatível.
 
 Não são instalados pelo `pacman` aplicativos como Calculadora, Calendário, navegador, editor de texto, mapas, clima ou outros utilitários GNOME.
 
