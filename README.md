@@ -15,6 +15,92 @@ Antes de executar:
 - driver gráfico definido durante a instalação inicial;
 - Secure Boot e criptografia não são configurados por este projeto.
 
+## Conectividade inicial
+
+Para clonar este repositório é necessário que o Arch tenha acesso à internet. Se houver um cabo de rede conectado e a rede tiver DHCP, normalmente nenhuma configuração adicional é necessária.
+
+### Conectar ao Wi-Fi no ambiente live do Arch
+
+A documentação oficial do Arch recomenda usar o `iwctl`, fornecido pelo `iwd`, para autenticar em redes Wi-Fi no ambiente da mídia de instalação.
+
+Primeiro, confirme que a interface de rede sem fio existe:
+
+```bash
+ip link
+```
+
+Se necessário, confirme também que o Wi-Fi não está bloqueado:
+
+```bash
+rfkill
+```
+
+Abra o `iwctl`:
+
+```bash
+iwctl
+```
+
+No prompt `[iwd]#`, liste os dispositivos Wi-Fi:
+
+```text
+device list
+```
+
+Identifique o dispositivo sem fio, por exemplo `wlan0`, `wlp2s0` ou nome semelhante. Em seguida, procure redes disponíveis:
+
+```text
+station DISPOSITIVO scan
+station DISPOSITIVO get-networks
+```
+
+Conecte à rede desejada:
+
+```text
+station DISPOSITIVO connect "NOME-DO-WIFI"
+```
+
+Exemplo:
+
+```text
+station wlan0 connect "Minha Rede"
+```
+
+Se a rede exigir senha, o `iwctl` solicitará a senha interativamente. Para SSIDs com espaços, mantenha o nome entre aspas.
+
+Saia do `iwctl` com `Ctrl+D` e teste a conexão:
+
+```bash
+ping -c 3 ping.archlinux.org
+```
+
+Se houver resposta, a conexão está funcionando.
+
+> Na ISO oficial do Arch, `iwd`, `systemd-networkd` e `systemd-resolved` já vêm preparados para uso no ambiente live. Isso não significa que o sistema instalado usará `iwd`: neste projeto, a rede permanente deve ser configurada no `archinstall`, preferencialmente com NetworkManager.
+
+Referências oficiais:
+
+- ArchWiki — Installation guide: https://wiki.archlinux.org/title/Installation_guide
+- ArchWiki — iwd: https://wiki.archlinux.org/title/Iwd
+
+### Alternativa: internet do celular por USB
+
+Também é possível usar o compartilhamento de internet do celular por USB (USB tethering). Em muitos aparelhos Android, basta conectar o celular por USB e ativar **Compartilhamento de internet via USB** nas configurações do aparelho. O Linux normalmente detecta a interface de rede criada pelo telefone e obtém endereço IP por DHCP.
+
+Depois de ativar o compartilhamento, confirme a nova interface:
+
+```bash
+ip link
+```
+
+E teste a conexão:
+
+```bash
+ping -c 3 ping.archlinux.org
+```
+
+Esse método pode ser útil quando não há Ethernet disponível e a configuração do Wi-Fi não é conveniente.
+
 ## Pré-requisito: Git
 
 O pacote `base` do Arch Linux **não inclui o Git**. Dependendo das opções escolhidas no `archinstall`, ele pode já estar disponível, mas este projeto não assume isso.
