@@ -9,7 +9,7 @@ PACKAGES=(
   nautilus
   nautilus-python
   ptyxis
-  gnome-software
+  bazaar
   gnome-keyring
   xdg-desktop-portal-gnome
   power-profiles-daemon
