@@ -7,7 +7,6 @@ PACKAGES=(
   nodejs
   npm
   android-tools
-  openai-codex
 )
 
 echo "==> Instalando ferramentas de desenvolvimento"
