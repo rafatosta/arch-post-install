@@ -26,13 +26,13 @@ install_aur_package() {
 install_flatpak() {
   local app_id="$1"
 
-  if flatpak info "$app_id" >/dev/null 2>&1; then
-    echo "[OK] $app_id já está instalado"
+  if flatpak info --user "$app_id" >/dev/null 2>&1; then
+    echo "[OK] $app_id já está instalado para o usuário"
     return 0
   fi
 
-  echo "==> Instalando Flatpak: $app_id"
-  flatpak install --system -y --noninteractive flathub "$app_id"
+  echo "==> Instalando Flatpak para o usuário: $app_id"
+  flatpak install --user -y --noninteractive flathub "$app_id"
 }
 
 echo "==> Instalando aplicativos de uso efetivo"
@@ -50,6 +50,7 @@ install_aur_package openai-codex-desktop
 install_aur_package google-chrome
 
 # Aplicativos portados do fluxo Fedora e mantidos como Flatpak.
+# São instalados no escopo do usuário para não depender de PolicyKit/senha administrativa.
 FLATPAK_APPS=(
   com.rtosta.zapzap
   com.spotify.Client
