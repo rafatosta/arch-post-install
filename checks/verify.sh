@@ -76,15 +76,28 @@ else
 fi
 
 echo
-if lspci 2>/dev/null | grep -qi nvidia; then
-  echo "[INFO] GPU NVIDIA detectada. Este repositório ainda não altera o driver NVIDIA."
+if lspci 2>/dev/null | grep -Eiq '(VGA compatible controller|3D controller|Display controller):.*NVIDIA'; then
+  echo "[INFO] GPU NVIDIA detectada"
+
+  for package in nvidia-open-dkms nvidia-utils nvidia-prime; do
+    if pacman -Q "$package" >/dev/null 2>&1; then
+      echo "[OK] $package instalado"
+    else
+      echo "[ERRO] $package não instalado"
+      status=1
+    fi
+  done
+
   if command -v nvidia-smi >/dev/null 2>&1; then
     echo "[OK] nvidia-smi disponível"
   else
-    echo "[INFO] nvidia-smi não encontrado; revise o driver escolhido no archinstall."
+    echo "[ERRO] nvidia-smi não encontrado"
+    status=1
   fi
+
+  echo "[INFO] O carregamento final dos módulos NVIDIA será validado após reiniciar."
 else
-  echo "[INFO] Nenhuma GPU NVIDIA detectada (esperado em muitas VMs)."
+  echo "[INFO] Nenhuma GPU NVIDIA detectada; configuração NVIDIA não é necessária."
 fi
 
 exit "$status"
