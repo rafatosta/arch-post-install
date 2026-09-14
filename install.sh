@@ -2,6 +2,39 @@
 set -Eeuo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKIP_FLATPAK_APPS=0
+
+usage() {
+  cat <<'EOF'
+Uso:
+  bash install.sh [opções]
+
+Opções:
+  --no-flatpak-apps   Instala e configura o sistema normalmente, mas não instala
+                      a lista de aplicativos Flatpak.
+  -h, --help          Exibe esta ajuda.
+EOF
+}
+
+for arg in "$@"; do
+  case "$arg" in
+    --no-flatpak-apps)
+      SKIP_FLATPAK_APPS=1
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Opção desconhecida: $arg" >&2
+      echo >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+export SKIP_FLATPAK_APPS
 
 if [[ ${EUID} -eq 0 ]]; then
   echo "Execute este script como usuário normal, não como root."
@@ -20,6 +53,11 @@ fi
 
 echo "==> Arch post-install"
 echo "    Usuário: ${USER}"
+if [[ "$SKIP_FLATPAK_APPS" == "1" ]]; then
+  echo "    Aplicativos Flatpak: pular"
+else
+  echo "    Aplicativos Flatpak: instalar"
+fi
 echo
 
 # Solicita a senha uma única vez no início e mantém o timestamp do sudo
