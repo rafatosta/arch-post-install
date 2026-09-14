@@ -12,7 +12,6 @@ PACKAGES=(
   bazaar
   gnome-keyring
   xdg-desktop-portal-gnome
-  power-profiles-daemon
   switcheroo-control
 )
 
@@ -55,7 +54,6 @@ echo "==> Habilitando o GDM"
 sudo systemctl enable gdm.service
 
 echo "==> Habilitando serviços úteis ao GNOME"
-sudo systemctl enable power-profiles-daemon.service 2>/dev/null || true
 sudo systemctl enable switcheroo-control.service 2>/dev/null || true
 
 echo "==> A integração 'Abrir no terminal' estará disponível no Nautilus após reiniciar a sessão."
