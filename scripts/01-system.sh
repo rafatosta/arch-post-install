@@ -6,6 +6,7 @@ PACKAGES=(
   git
   curl
   wget
+  pciutils
   networkmanager
   pipewire
   pipewire-alsa
