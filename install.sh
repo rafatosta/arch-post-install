@@ -46,6 +46,7 @@ for script in \
   "$ROOT_DIR/scripts/04-apps.sh" \
   "$ROOT_DIR/scripts/05-development.sh" \
   "$ROOT_DIR/scripts/06-customization.sh" \
+  "$ROOT_DIR/scripts/07-nvidia.sh" \
   "$ROOT_DIR/checks/verify.sh"; do
   echo
   echo "==> Executando $(basename "$script")"
