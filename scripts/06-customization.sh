@@ -12,8 +12,8 @@ run_gsettings() {
 echo "==> Instalando tema adw-gtk3 para aplicativos GTK3 legados"
 sudo pacman -S --needed --noconfirm adw-gtk-theme
 
-echo "==> Instalando temas adw-gtk3 para aplicativos Flatpak"
-flatpak install -y flathub \
+echo "==> Instalando temas adw-gtk3 para aplicativos Flatpak do usuário"
+flatpak install --user -y flathub \
   org.gtk.Gtk3theme.adw-gtk3 \
   org.gtk.Gtk3theme.adw-gtk3-dark
 
