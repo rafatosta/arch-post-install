@@ -68,10 +68,10 @@ case "$configured_theme" in
     ;;
 esac
 
-if flatpak remote-list --columns=name 2>/dev/null | grep -qx flathub; then
-  echo "[OK] Flathub configurado"
+if flatpak remote-list --user --columns=name 2>/dev/null | grep -qx flathub; then
+  echo "[OK] Flathub configurado para o usuário"
 else
-  echo "[ERRO] Flathub não configurado"
+  echo "[ERRO] Flathub não configurado para o usuário"
   status=1
 fi
 
