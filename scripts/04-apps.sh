@@ -64,6 +64,17 @@ FLATPAK_APPS=(
   com.valvesoftware.Steam
   com.github.tchx84.Flatseal
   net.nokyan.Resources
+  page.tesk.Refine
+  com.boxy_svg.BoxySVG
+  com.belmoussaoui.Obfuscate
+  app.drey.Dialect
+  io.github.fabrialberio.pinapp
+  me.dusansimic.DynamicWallpaper
+  com.mattjakeman.ExtensionManager
+  it.mijorus.gearlever
+  org.desktop_plus.desktop-plus
+  org.virt_manager.virt-manager
+  org.virt_manager.virt_manager.Extension.Qemu
 )
 
 for app in "${FLATPAK_APPS[@]}"; do
