@@ -9,16 +9,26 @@ run_gsettings() {
   fi
 }
 
+warn() {
+  printf '[AVISO] %s\n' "$*" >&2
+}
+
+safe_gsettings_set() {
+  if ! run_gsettings set "$@"; then
+    warn "Falha ao aplicar configuração GNOME: $*"
+  fi
+}
+
 echo "==> Instalando tema adw-gtk3 para aplicativos GTK3 legados"
-sudo pacman -S --needed --noconfirm adw-gtk-theme
+sudo pacman -S --needed --noconfirm adw-gtk-theme || warn "Não foi possível instalar adw-gtk-theme."
 
 echo "==> Instalando temas adw-gtk3 para aplicativos Flatpak do usuário"
 flatpak install --user -y flathub \
   org.gtk.Gtk3theme.adw-gtk3 \
-  org.gtk.Gtk3theme.adw-gtk3-dark
+  org.gtk.Gtk3theme.adw-gtk3-dark || warn "Não foi possível instalar os temas GTK3 via Flatpak."
 
 echo "==> Configurando tema GTK3 conforme o esquema de cores do GNOME"
-color_scheme="$(run_gsettings get org.gnome.desktop.interface color-scheme)"
+color_scheme="$(run_gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null || true)"
 
 if [[ "$color_scheme" == "'prefer-dark'" ]]; then
   theme="adw-gtk3-dark"
@@ -26,26 +36,25 @@ else
   theme="adw-gtk3"
 fi
 
-run_gsettings set org.gnome.desktop.interface gtk-theme "$theme"
+safe_gsettings_set org.gnome.desktop.interface gtk-theme "$theme"
 
-configured_theme="$(run_gsettings get org.gnome.desktop.interface gtk-theme)"
-if [[ "$configured_theme" != "'$theme'" ]]; then
-  printf 'ERRO: Falha ao configurar o tema GTK3: %s\n' "$theme" >&2
-  exit 1
+configured_theme="$(run_gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null || true)"
+if [[ "$configured_theme" == "'$theme'" ]]; then
+  echo "[OK] Tema GTK3 configurado: $theme"
+else
+  warn "Não foi possível confirmar o tema GTK3: $theme"
 fi
 
-echo "[OK] Tema GTK3 configurado: $theme"
-
 echo "==> Aplicando preferências pessoais do GNOME"
-run_gsettings set org.gnome.desktop.interface gtk-enable-primary-paste true
-run_gsettings set org.gnome.desktop.search-providers disable-external true
-run_gsettings set org.gnome.desktop.privacy remember-app-usage false
-run_gsettings set org.gnome.desktop.privacy remember-recent-files false
-run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
-run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
-run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 1800
-run_gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
+safe_gsettings_set org.gnome.desktop.interface gtk-enable-primary-paste true
+safe_gsettings_set org.gnome.desktop.search-providers disable-external true
+safe_gsettings_set org.gnome.desktop.privacy remember-app-usage false
+safe_gsettings_set org.gnome.desktop.privacy remember-recent-files false
+safe_gsettings_set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+safe_gsettings_set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+safe_gsettings_set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
+safe_gsettings_set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 1800
+safe_gsettings_set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
 
 echo "[OK] Preferências do GNOME aplicadas"
 
@@ -55,21 +64,25 @@ ICON_THEME="LinuxMidnight"
 ICON_TMP="$(mktemp -d)"
 trap 'rm -rf -- "$ICON_TMP"' EXIT
 
-git clone --depth=1 "$ICON_REPO" "$ICON_TMP/LinuxMidnight-icon-theme"
-bash "$ICON_TMP/LinuxMidnight-icon-theme/install.sh"
+if git clone --depth=1 "$ICON_REPO" "$ICON_TMP/LinuxMidnight-icon-theme"; then
+  if bash "$ICON_TMP/LinuxMidnight-icon-theme/install.sh"; then
+    if run_gsettings list-schemas 2>/dev/null | grep -Fxq org.gnome.desktop.interface; then
+      safe_gsettings_set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+      configured_icons="$(run_gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || true)"
 
-if run_gsettings list-schemas | grep -Fxq org.gnome.desktop.interface; then
-  run_gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
-  configured_icons="$(run_gsettings get org.gnome.desktop.interface icon-theme)"
-
-  if [[ "$configured_icons" != "'$ICON_THEME'" ]]; then
-    printf 'ERRO: Falha ao ativar o tema de ícones: %s\n' "$ICON_THEME" >&2
-    exit 1
+      if [[ "$configured_icons" == "'$ICON_THEME'" ]]; then
+        echo "[OK] Tema de ícones configurado: $ICON_THEME"
+      else
+        warn "Tema LinuxMidnight instalado, mas não foi possível confirmar sua ativação."
+      fi
+    else
+      warn "Tema LinuxMidnight instalado, mas o schema do GNOME não está disponível."
+    fi
+  else
+    warn "Falha ao instalar o tema LinuxMidnight."
   fi
-
-  echo "[OK] Tema de ícones configurado: $ICON_THEME"
 else
-  echo "[AVISO] Tema LinuxMidnight instalado, mas o schema do GNOME não está disponível para ativação automática."
+  warn "Falha ao baixar o tema LinuxMidnight."
 fi
 
 rm -rf -- "$ICON_TMP"
