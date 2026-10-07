@@ -45,10 +45,6 @@ install_aur_package visual-studio-code-bin
 # O pacote AUR reaproveita a distribuição Linux oficial e a integra ao Arch.
 install_aur_package openai-codex-desktop
 
-# Google Chrome oficial.
-# Preferimos o pacote AUR para manter integração nativa com o sistema.
-install_aur_package google-chrome
-
 if [[ "${SKIP_FLATPAK_APPS:-0}" == "1" ]]; then
   echo "==> Aplicativos Flatpak ignorados por opção do instalador"
   exit 0
@@ -57,6 +53,7 @@ fi
 # Aplicativos portados do fluxo Fedora e mantidos como Flatpak.
 # São instalados no escopo do usuário para não depender de PolicyKit/senha administrativa.
 FLATPAK_APPS=(
+  com.google.Chrome
   com.rtosta.zapzap
   com.spotify.Client
   org.onlyoffice.desktopeditors
