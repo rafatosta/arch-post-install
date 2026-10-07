@@ -36,6 +36,18 @@ fi
 
 echo "[OK] Tema GTK3 configurado: $theme"
 
+echo "==> Aplicando preferências pessoais do GNOME"
+run_gsettings set org.gnome.desktop.interface gtk-enable-primary-paste true
+run_gsettings set org.gnome.desktop.search-providers disable-external true
+run_gsettings set org.gnome.desktop.privacy remember-app-usage false
+run_gsettings set org.gnome.desktop.privacy remember-recent-files false
+run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
+run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 1800
+
+echo "[OK] Preferências do GNOME aplicadas"
+
 echo "==> Instalando tema de ícones LinuxMidnight"
 ICON_REPO="https://github.com/rafatosta/LinuxMidnight-icon-theme.git"
 ICON_THEME="LinuxMidnight"
