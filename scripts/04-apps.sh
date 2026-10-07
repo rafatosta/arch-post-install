@@ -59,7 +59,6 @@ fi
 FLATPAK_APPS=(
   com.rtosta.zapzap
   com.spotify.Client
-  com.jetbrains.IntelliJ-IDEA-Community
   org.onlyoffice.desktopeditors
   org.videolan.VLC
   com.valvesoftware.Steam
