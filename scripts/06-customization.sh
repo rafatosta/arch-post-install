@@ -45,6 +45,7 @@ run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
 run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
 run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
 run_gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 1800
+run_gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
 
 echo "[OK] Preferências do GNOME aplicadas"
 
