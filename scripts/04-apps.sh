@@ -37,6 +37,9 @@ install_flatpak() {
 
 echo "==> Instalando aplicativos de uso efetivo"
 
+# Helper AUR usado também pelo atalho de atualização do sistema.
+install_aur_package yay
+
 # Visual Studio Code oficial da Microsoft.
 # O pacote 'code' dos repositórios oficiais do Arch é Code - OSS.
 install_aur_package visual-studio-code-bin
