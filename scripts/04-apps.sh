@@ -44,9 +44,9 @@ install_aur_package yay
 # O pacote 'code' dos repositórios oficiais do Arch é Code - OSS.
 install_aur_package visual-studio-code-bin
 
-# Codex Desktop para Linux.
-# O pacote AUR reaproveita a distribuição Linux oficial e a integra ao Arch.
-install_aur_package openai-codex-desktop
+# ChatGPT Desktop para Linux.
+# O pacote AUR integra a distribuição oficial ao Arch.
+install_aur_package openai-chatgpt
 
 if [[ "${SKIP_FLATPAK_APPS:-0}" == "1" ]]; then
   echo "==> Aplicativos Flatpak ignorados por opção do instalador"
