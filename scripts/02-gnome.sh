@@ -6,6 +6,9 @@ PACKAGES=(
   gnome-session
   gdm
   gnome-control-center
+  gnome-text-editor
+  gnome-calendar
+  gnome-calculator
   nautilus
   nautilus-python
   ptyxis
