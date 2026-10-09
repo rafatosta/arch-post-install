@@ -64,9 +64,9 @@ echo
 # válido durante toda a execução. Nenhuma senha é armazenada pelo script.
 sudo -v
 (
-  while kill -0 "$$" 2>/dev/null; do
-    sudo -n true 2>/dev/null || exit
-    sleep 60
+  while kill -0 "$" 2>/dev/null; do
+    sudo -n -v 2>/dev/null || exit
+    sleep 30
   done
 ) &
 SUDO_KEEPALIVE_PID=$!
